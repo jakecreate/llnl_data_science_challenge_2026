@@ -1,0 +1,4 @@
+[mcp_servers.segmentation-tools]
+command = 'C:\Users\oconn\anaconda3\python.exe'
+args = ['src/mcp_server.py']
+cwd = 'C:\Users\oconn\DSC2026\llnl_data_science_challenge_2026'
