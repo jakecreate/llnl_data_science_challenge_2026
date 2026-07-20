@@ -1,0 +1,8 @@
+input=9x9x9_octet_lattice.tif
+slices=761
+height=815
+width=837
+threshold_otsu_slice_380=40499.000
+foreground_voxels=56746185
+background_voxels=462373770
+foreground_fraction=0.109312
