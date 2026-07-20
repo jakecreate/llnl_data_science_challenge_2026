@@ -32,8 +32,8 @@ def segment_ct_dataset(input_filepath: str, output_filepath: str, threshold: flo
 
         file_to_segment = np.load(input_filepath)
 
-        thresh = threshold_otsu(file_to_segment)
-        mask = (file_to_segment > thresh).astype(np.uint8)  
+        # thresh = threshold_otsu(file_to_segment, threshold)
+        mask = (file_to_segment > threshold).astype(np.uint8)  
 
         np.save(output_filepath, mask)
 
@@ -42,7 +42,7 @@ def segment_ct_dataset(input_filepath: str, output_filepath: str, threshold: flo
     else:
         return (
             f"Segmentation successful. Saved to: {output_filepath}. "
-            f"Otsu threshold: {float(thresh):.10g}."
+            f"Applied threshold: {float(threshold):.10g}."
         )
 
 
