@@ -1,5 +1,6 @@
 from fastmcp import FastMCP
 import numpy as np
+from PIL import Image
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
@@ -39,7 +40,21 @@ def visualize_slice(input_filepath: str, output_filepath: str, slice_index: int,
     Returns:
         A status message indicating success and the save location, or an error message.
     """
-    pass # Implementation goes here
+    try:
+        voxels = np.load(input_filepath)
+        slice = np.take(voxels, slice_index, axis=axis)
+        
+        slice_min, slice_max = slice.min(), slice.max()
+        if slice_max > slice_min:
+            normalized = ((slice - slice_min) / (slice_max - slice_min) * 255).astype(np.uint8)
+        else:
+            normalized = np.zeros_like(slice, dtype=np.uint8)
+
+        image = Image.fromarray(normalized)
+        image.save(output_filepath)
+    except Exception as e:
+        return f"Error while running visualize_slice: {e}"
+    return f"Dataset has been sliced and saved to {output_filepath}"
 
 @mcp.tool()
 def skeletonize(input_filepath: str, output_filepath: str) -> str:
