@@ -1,4 +1,5 @@
 from fastmcp import FastMCP
+import numpy as np
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
@@ -16,7 +17,13 @@ def segment_ct_dataset(input_filepath: str, output_filepath: str, threshold: flo
     Returns:
         A status message indicating success and the save location, or an error message.
     """
-    pass # Implementation goes here
+    try:
+        voxels = np.load(input_filepath)
+        mask = (voxels >= threshold).astype(np.uint8)
+        np.save(output_filepath, mask)
+    except Exception as e:
+        return f"Error while running segment_ct_dataset: {e}"
+    return f"Dataset has been segmented and saved to {output_filepath}"
 
 @mcp.tool()
 def visualize_slice(input_filepath: str, output_filepath: str, slice_index: int, axis: int = 0) -> str:
