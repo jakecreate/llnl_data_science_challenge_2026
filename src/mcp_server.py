@@ -2,6 +2,8 @@ import numpy as np
 from fastmcp import FastMCP
 from skimage.filters import threshold_otsu, try_all_threshold
 from PIL import Image
+from skimage.morphology import skeletonize as skeletonize_3d
+
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
@@ -88,7 +90,20 @@ def skeletonize(input_filepath: str, output_filepath: str) -> str:
     Returns:
         A status message indicating success and the save location, or an error message.
     """
-    pass # Implementation goes here, calling skeletonize_mask internally
+
+    try:
+        file_to_skele = np.load(input_filepath)
+
+        skeleton = skeletonize_3d(file_to_skele > 0)
+        np.save(output_filepath, skeleton)
+        
+    except FileNotFoundError:
+        return f"Skeletonization failed: input file not found: {input_filepath}"
+    else: 
+        return (f"Skeletonization successful. Saved to: {output_filepath}. ")
+
+
+
 
 if __name__ == "__main__":
     # Run the FastMCP server, exposing the tools over standard I/O (default)
