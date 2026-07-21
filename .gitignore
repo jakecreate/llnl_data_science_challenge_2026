@@ -172,3 +172,6 @@ ehthumbs.db
 Thumbs.db
 
 result
+
+# Locally generated segmentation, skeleton, visualization, and report artifacts
+/charlette_gen_files/
