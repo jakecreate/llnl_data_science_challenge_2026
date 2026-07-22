@@ -12,8 +12,12 @@ def signed_volume_of_triangle(p1, p2, p3):
 
 def volume_of_mesh(input_filepath: str) -> float:
     stl_mesh = mesh.Mesh.from_file(input_filepath)
+    volume, cog, inertia = stl_mesh.get_mass_properties()
+    print(volume)
     triangles = stl_mesh.vectors
     vols = 0.0
     for t in triangles:
         vols += signed_volume_of_triangle(t[0], t[1], t[2])
     return abs(vols)
+
+print(volume_of_mesh("data/missing_struts/stls/0.stl"))
