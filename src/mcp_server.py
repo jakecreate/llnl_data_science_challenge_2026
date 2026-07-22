@@ -2,6 +2,7 @@ from fastmcp import FastMCP
 import numpy as np
 from PIL import Image
 from skeletonization import skeletonize_mask
+from volume import volume_of_mesh
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
@@ -74,6 +75,23 @@ def skeletonize(input_filepath: str, output_filepath: str) -> str:
         return f"Successfully saved skeleton to {output_filepath}"
     except Exception as e:
         return f"Error while running skeletonize: {e}"
+
+@mcp.tool()
+def volume(input_filepath: str) -> str:
+    """
+    Get the volume of .stl files
+
+    Args:
+        input_filepath: Path to the .stl file containing the mesh
+    
+    Returns:
+        A message indicating the volume of the .stl file, or an error message.
+    """
+    try:
+        volume = volume_of_mesh(input_filepath)
+        return f"The volume of the .stl file is: {volume}"
+    except Exception as e:
+        return f"Error while running volume: {e}"
 
 if __name__ == "__main__":
     # Run the FastMCP server, exposing the tools over standard I/O (default)

@@ -1,4 +1,0 @@
-[mcp_servers.segmentation-tools]
-command = "/opt/miniconda3/envs/dssi_env/bin/python"
-args = ["/Users/brandondelmundo/Desktop/bdm/Data Science Chalenge/llnl_data_science_challenge_2026/src/mcp_server.py"]
-env = {}
