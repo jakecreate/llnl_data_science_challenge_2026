@@ -76,22 +76,35 @@ def skeletonize(input_filepath: str, output_filepath: str) -> str:
     except Exception as e:
         return f"Error while running skeletonize: {e}"
 
+# @mcp.tool()
+# def volume(input_filepath: str) -> str:
+#     """
+#     Get the volume of .stl files
+
+#     Args:
+#         input_filepath: Path to the .stl file containing the mesh
+    
+#     Returns:
+#         A message indicating the volume of the .stl file, or an error message.
+#     """
+#     try:
+#         volume = volume_of_mesh(input_filepath)
+#         return f"The volume of the .stl file is: {volume}"
+#     except Exception as e:
+#         return f"Error while running volume: {e}"
+
 @mcp.tool()
-def volume(input_filepath: str) -> str:
+def pyvista_screenshot():
     """
-    Get the volume of .stl files
+    Take a screenshot of an .stl file for evaluation of defects.
 
     Args:
-        input_filepath: Path to the .stl file containing the mesh
-    
+        input_filepath: Path to the .stl file in missing_struts
+        output_filepath: Path to save the screenshot (Should point to the screenshots directory and be in a .png format)
+        slice: The index of the
     Returns:
-        A message indicating the volume of the .stl file, or an error message.
+        A .png image in the screenshots directory representing a slice on the z_axis at the point of the slice
     """
-    try:
-        volume = volume_of_mesh(input_filepath)
-        return f"The volume of the .stl file is: {volume}"
-    except Exception as e:
-        return f"Error while running volume: {e}"
 
 if __name__ == "__main__":
     # Run the FastMCP server, exposing the tools over standard I/O (default)
