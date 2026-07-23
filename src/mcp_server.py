@@ -4,6 +4,10 @@ from PIL import Image
 from skeletonization import skeletonize_mask
 from volume import volume_of_mesh
 from tool_pyvista import *
+from tool_opencv import *
+import cv2
+import pyvista as pv
+import matplotlib.pyplot as plt
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
@@ -77,23 +81,6 @@ def skeletonize(input_filepath: str, output_filepath: str) -> str:
     except Exception as e:
         return f"Error while running skeletonize: {e}"
 
-# @mcp.tool()
-# def volume(input_filepath: str) -> str:
-#     """
-#     Get the volume of .stl files
-
-#     Args:
-#         input_filepath: Path to the .stl file containing the mesh
-    
-#     Returns:
-#         A message indicating the volume of the .stl file, or an error message.
-#     """
-#     try:
-#         volume = volume_of_mesh(input_filepath)
-#         return f"The volume of the .stl file is: {volume}"
-#     except Exception as e:
-#         return f"Error while running volume: {e}"
-
 @mcp.tool()
 def pyvista_screenshot(input_filepath: str, output_filepath: str, slice: int):
     """
@@ -112,6 +99,23 @@ def pyvista_screenshot(input_filepath: str, output_filepath: str, slice: int):
         return f"Successfully saved screenshot slice to {output_filepath}"
     except Exception as e:
         return f"Error while running pyvista_screenshot: {e}"
+
+@mcp.tool()
+def bitwise_xor_skeletion(input_filepath_1: str, input_filepath_2: str, output_filepath: str):
+    """
+    Takes in two skeletonized images and get a bitwise xor of both images.
+    Args:
+        input_filepath_1: Path to the skeletonized image file 1
+        input_filepath_2: Path to the skeletonized image file 2
+        output_filepath: Path to save the screenshot (Should point to the slices directory and be in a .png format)
+    Returns:
+        A .pngimage of the bitwise xor of both input images
+    """
+    try:
+        bitwise_xor(input_filepath_1, input_filepath_2, output_filepath)
+        return f"Successfully saved bitwise xor to {output_filepath}"
+    except Exception as e:
+        return f"Error while running bitwise_xor_skeletion: {e}"
 
 if __name__ == "__main__":
     # Run the FastMCP server, exposing the tools over standard I/O (default)
