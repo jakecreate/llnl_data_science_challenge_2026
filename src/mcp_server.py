@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image
 from skeletonization import skeletonize_mask
 from volume import volume_of_mesh
+from tool_pyvista import *
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
@@ -94,7 +95,7 @@ def skeletonize(input_filepath: str, output_filepath: str) -> str:
 #         return f"Error while running volume: {e}"
 
 @mcp.tool()
-def pyvista_screenshot():
+def pyvista_screenshot(input_filepath: str, output_filepath: str, slice: int):
     """
     Take a screenshot of an .stl file for evaluation of defects.
 
@@ -105,6 +106,12 @@ def pyvista_screenshot():
     Returns:
         A .png image in the screenshots directory representing a slice on the z_axis at the point of the slice
     """
+    try:
+        mesh = load(input_filepath)
+        screenshot_slice(mesh, slice, output_filepath)
+        return f"Successfully saved screenshot slice to {output_filepath}"
+    except Exception as e:
+        return f"Error while running pyvista_screenshot: {e}"
 
 if __name__ == "__main__":
     # Run the FastMCP server, exposing the tools over standard I/O (default)

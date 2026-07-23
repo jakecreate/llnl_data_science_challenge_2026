@@ -10,11 +10,14 @@ def slice(mesh, z_slice):
 def screenshot_slice(mesh, z_slice, output_filepath: str):
     try:
         pl = pv.Plotter(off_screen=True)
-        slab = slice(mesh, z_slice)
-        pl.add_mesh(slab, color='black')
+        # slab = slice(mesh, z_slice)
+        # pl.add_mesh(slab, color='black')
+        origin = (mesh.center[0], mesh.center[1], z_slice)
+        slice = mesh.slice(normal=[0, 0, 1], origin=origin)
+        pl.add_mesh(slice, color='black')
         pl.camera_position = 'xy'
         pl.camera.zoom('tight')
-        pl.show(output_filepath)
+        pl.show(screenshot=output_filepath)
         return True
     except Exception as e:
         print(f"Erorr while taking a screenshot slice: {e}")
@@ -26,7 +29,7 @@ def screenshot(mesh, output_filepath: str):
         pl.add_mesh(mesh, color='black')
         pl.camera_position = 'xy'
         pl.camera.zoom('tight')
-        pl.show(output_filepath)
+        pl.show(screenshot=output_filepath)
         return True
     except Exception as e:
         print(f"Erorr while taking a screenshot: {e}")
@@ -35,3 +38,8 @@ def screenshot(mesh, output_filepath: str):
 def load(input_filepath: str):
     mesh = pv.read(input_filepath)
     return mesh
+
+mesh = load('data/missing_struts/stls/0.stl')
+screenshot_slice(mesh, 0, 'slices/z0_0.png')
+mesh = load('data/missing_struts/stls/0.5.stl')
+screenshot_slice(mesh, 0, 'slices/z0_0.5.png')

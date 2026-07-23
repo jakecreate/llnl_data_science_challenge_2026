@@ -8,7 +8,7 @@ def get_bounds(mesh):
     z_bound = zmax - zmin
     return x_bound, y_bound, z_bound
 
-def load_stl(input_filepath: str):
+def load_stl(input_filepath: str, output_filepath: str):
     mesh = pv.read(input_filepath)
     print(get_bounds(mesh))
     # pl = pv.Plotter(off_screen=True)
@@ -17,7 +17,7 @@ def load_stl(input_filepath: str):
     pl.camera_position = 'xy'
     # pl.camera.zoom('tight')
     # pl.show(screenshot='test.png')
-    pl.show()
+    pl.show(screenshot=output_filepath)
 
     # cpos = mesh.plot(cpos='xy')
 
@@ -49,7 +49,7 @@ def slice_stl(input_filepath, height):
 
     # pl.add_mesh(mesh, color='k')
     # pl.add_mesh(slice)
-    pl.add_mesh(slice1, color='black')
+    pl.add_mesh(slice1, color='q')
     # pl.add_mesh(slab)
     pl.show()
     
