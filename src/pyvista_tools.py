@@ -13,7 +13,7 @@ def load_stl(input_filepath: str, output_filepath: str):
     print(get_bounds(mesh))
     # pl = pv.Plotter(off_screen=True)
     pl = pv.Plotter()
-    pl.add_mesh(mesh, color='black')
+    pl.add_mesh(mesh)
     pl.camera_position = 'xy'
     # pl.camera.zoom('tight')
     # pl.show(screenshot='test.png')
@@ -55,6 +55,6 @@ def slice_stl(input_filepath, height):
     
 
 
-slice_stl('data/missing_struts/stls/0.stl', 0)
+load_stl('0_skew.stl', 0)
 # load_stl('data/missing_struts/stls/0.stl')
 # load_stl('model_aligned.stl')

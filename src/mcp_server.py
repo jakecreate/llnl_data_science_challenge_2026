@@ -8,6 +8,7 @@ from tool_opencv import *
 import cv2
 import pyvista as pv
 import matplotlib.pyplot as plt
+import tifffile
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
@@ -26,7 +27,10 @@ def segment_ct_dataset(input_filepath: str, output_filepath: str, threshold: flo
         A status message indicating success and the save location, or an error message.
     """
     try:
-        voxels = np.load(input_filepath)
+        if input_filepath.lower().endswith(('.tif', '.tiff')):
+            voxels = tifffile.imread(input_filepath)
+        else:
+            voxels = np.load(input_filepath)
         mask = (voxels >= threshold).astype(np.uint8)
         np.save(output_filepath, mask)
     except Exception as e:
@@ -103,10 +107,12 @@ def pyvista_screenshot(input_filepath: str, output_filepath: str, slice: int):
 def bitwise_xor_skeletion(input_filepath_1: str, input_filepath_2: str, output_filepath: str):
     """
     Takes in two skeletonized images and get a bitwise xor of both images.
+
     Args:
         input_filepath_1: Path to the skeletonized image file 1
         input_filepath_2: Path to the skeletonized image file 2
         output_filepath: Path to save the screenshot
+
     Returns:
         A status message indicating success and the save location, or an error message
     """
@@ -121,11 +127,13 @@ def create_image_rectangle(input_filepath: str, output_filepath: str, top_left_p
     """
     Takes in an image file and two points (x, y) which indicates the top left and bottom right of the rectangle.
     This creates a rectangle on the image.
+
     Args:
         input_filepath: Path to the skeletonized image file
         output_filepath: Path to the outputted image file
         top_left_point: A tuple (x, y) corresponding to the top left conrer of the rectangle
         bottom_right_point: A tuple (x, y) corresponding to the bottom right conrer of the rectangle
+
     Returns:
         An image with the rectangle box added to it.
     """

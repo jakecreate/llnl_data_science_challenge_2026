@@ -39,7 +39,6 @@ def load(input_filepath: str):
     mesh = pv.read(input_filepath)
     return mesh
 
-mesh = load('data/missing_struts/stls/0.stl')
-screenshot_slice(mesh, 0, 'slices/z0_0.png')
-mesh = load('data/missing_struts/stls/0.5.stl')
-screenshot_slice(mesh, 0, 'slices/z0_0.5.png')
+# mesh = load('data/missing_struts/stls/0.stl')
+mesh = load('0.5_skew.stl')
+screenshot_slice(mesh, -16.1, 'slices/z0_0.5_100_skew.png')
