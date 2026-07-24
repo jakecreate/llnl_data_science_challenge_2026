@@ -8,8 +8,8 @@ import trimesh
 # --- Load STL ---
 # mesh = trimesh.load('data/missing_struts/stls/0.stl')
 # pv_mesh = pv.read('data/missing_struts/stls/0.stl')
-mesh = trimesh.load('model_lattice_only.stl')
-pv_mesh = pv.read('model_lattice_only.stl')
+mesh = trimesh.load('cropped.stl')
+pv_mesh = pv.read('cropped.stl')
 
 # Translate STL so its min bound sits at (0,0,0)
 stl_min = np.array(mesh.bounds[0])
@@ -71,7 +71,7 @@ lattice_tubes = lattice.tube(radius=0.1)
 
 # --- Overlay ---
 pl = pv.Plotter()
-pl.add_mesh(pv_mesh, color='silver', opacity=0.4)
+pl.add_mesh(pv_mesh, color='blue', opacity=0.4)
 pl.add_mesh(lattice_tubes, color='black')
 pl.add_axes()
 pl.show()

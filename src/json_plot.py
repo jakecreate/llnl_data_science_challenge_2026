@@ -32,7 +32,8 @@ lattice_tubes = lattice.tube(radius=0.5)
 # Plot
 plotter = pv.Plotter()
 plotter.add_mesh(lattice_tubes, color='silver', smooth_shading=True)
-input_filepath = 'data/missing_struts/stls/0.stl'
+# input_filepath = 'data/missing_struts/stls/0.stl'
+input_filepath = 'cropped.stl'
 mesh = pv.read(input_filepath)
 # pl = pv.Plotter(off_screen=True)
 # pl = pv.Plotter()

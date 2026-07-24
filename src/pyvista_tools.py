@@ -55,6 +55,6 @@ def slice_stl(input_filepath, height):
     
 
 
-load_stl('0_skew.stl', 0)
+load_stl('0_skew.stl', None)
 # load_stl('data/missing_struts/stls/0.stl')
 # load_stl('model_aligned.stl')
