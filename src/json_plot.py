@@ -36,8 +36,20 @@ input_filepath = 'data/missing_struts/stls/0.stl'
 mesh = pv.read(input_filepath)
 # pl = pv.Plotter(off_screen=True)
 # pl = pv.Plotter()
-plotter.add_mesh(mesh, color='black')
-# plotter.camera_position = 'xy'
+plotter.add_mesh(mesh)
+plotter.camera_position = 'xz'
+
+# plotter = pv.PyVistaPlotter() if hasattr(pv, 'PyVistaPlotter') else pv.Plotter()
+# plane = pv.Plane(center=(0, 0, 0), direction=(0, 0, 1), i_size=10, j_size=10)
+
+# Add the plane to the scene
+# plotter.add_mesh(plane, color='black', show_edges=True)
+# plotter.show()
+
+plane = pv.Plane(center=(0, 0, 0), direction=(0, 0, 1), i_size=5, j_size=5)
+plotter.add_mesh(plane, show_edges=True, color='lightblue')
+plotter.add_axes()
+
 # pl.camera.zoom('tight')
 # pl.show(screenshot='test.png')
 plotter.show()
