@@ -1,7 +1,7 @@
 import numpy as np
 import pyvista as pv
 
-mesh = pv.read('data/missing_struts/stls/0.5.stl')
+mesh = pv.read('data/missing_struts/stls/0.stl')
 # xmin, xmax, ymin, ymax, zmin, zmax = mesh.bounds
 # print(mesh.bounds)
 # xsize = xmax - xmin
@@ -33,4 +33,4 @@ print('Cropped size:', cropped.bounds[1]-cropped.bounds[0],
                         cropped.bounds[3]-cropped.bounds[2],
                         cropped.bounds[5]-cropped.bounds[4])
 surface_mesh = cropped.extract_surface()
-surface_mesh.save('cropped_0.5.stl')
+surface_mesh.save('cropped_0.stl')

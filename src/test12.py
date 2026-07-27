@@ -16,19 +16,14 @@ threshold = volume.max() * 0.5    # adjust based on your actual segmentation thr
 tif_surface = grid.threshold(threshold)
 
 # ---------- Load STL mesh ----------
-stl_mesh = pv.read('model_scaled_translated_full.stl')
+stl_mesh = pv.read('data/missing_struts/stls/0.stl')
 
-# Apply scale factor to bring STL into the same units as the TIF
+stl_mesh.rotate_z(90, inplace=True)  # check sign — use -90 if metal ends up flipped/wrong direction
+print("After rotation, STL bounds:", stl_mesh.bounds)
 
-# Axis correspondence: TIF stacking axis matches STL's Y, but flipped
-# PyVista axis order in points is [x, y, z] -> swap/flip as needed
-pts = stl_mesh.points.copy()
-pts[:, 1] = -pts[:, 1]   # flip Y
-stl_mesh.points = pts
-
-# Translate STL so its min bound sits at (0,0,0), matching the TIF's origin
 stl_min = np.array(stl_mesh.bounds[::2])  # [xmin, ymin, zmin]
 stl_mesh.translate(-stl_min, inplace=True)
+print("After translation, STL bounds:", stl_mesh.bounds)
 
 # ---------- Plot both together ----------
 pl = pv.Plotter()

@@ -38,4 +38,4 @@ def load(input_filepath: str):
     return mesh
 
 mesh = load('cropped_0.5.stl')
-screenshot_slice(mesh, 0, 'slices/z_0_test.png', (0, 0, 1), 'yz', 'x')
+screenshot_slice(mesh, 0, 'slices/z_0_test.png', (0, 0, 1), 'yz', 'x')    

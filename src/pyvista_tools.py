@@ -13,8 +13,13 @@ def load_stl(input_filepath: str, output_filepath: str):
     print(get_bounds(mesh))
     pl = pv.Plotter()
     pl.add_mesh(mesh)
-    pl.camera_position = 'xz'
-    pl.camera.zoom('tight')
+    # pl.camera_position = 'xz'
+    # pl.reset_camera()
+    # pl.camera.zoom('tight')
+    pl.enable_parallel_projection()
+    pl.view_xz()   
+    pl.camera.tight(view='xz')
+    pl.add_axes()
     pl.show(screenshot=output_filepath)
 
 def thick_slice_z(mesh, z_center, thickness):
@@ -46,6 +51,8 @@ def slice_stl(input_filepath, height):
     # pl.add_mesh(mesh, color='k')
     # pl.add_mesh(slice)
     pl.add_mesh(slice1, color='q')
+    pl.add_legend()
+    pl.add_axes()
     # pl.add_mesh(slab)
     pl.show()
     
@@ -86,7 +93,7 @@ def slice_stl(input_filepath, height):
 #     pl.show(screenshot=output_filepath)
 #     return sliced
 
-load_stl('model_scaled_translated_full.stl', None, y_position=10.0, thickness=1)
+load_stl('data/missing_struts/stls/0.stl', None)
 # load_stl('model_scaled_translated_full.stl', None)
 # load_stl('data/missing_struts/stls/0.stl')
 # load_stl('model_aligned.stl')
