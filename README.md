@@ -1,5 +1,13 @@
 # Open-Ended Agentic AI for Materials Science Project
 
+| Layer                | Answers                                               | Scope                            |
+| -------------------- | ----------------------------------------------------- | -------------------------------- |
+| `AGENTS.md`          | "What are the rules for working in this repo?"        | Always loaded                    |
+| `.agents/skills/`    | "How do I perform this specific recurring task well?" | Loaded on demand, cross-tool     |
+| `.codex/agents/`     | "Who does the work, with what permissions and model?" | Codex-specific, spawned per task |
+| `.codex/config.toml` | "How is Codex configured for this project?"           | Codex-specific, always applied   |
+| `src/` + `data/`     | The actual code and data being operated on            | N/A                              |
+
 In the second half of the challenge, the training wheels come off. You are free to move beyond the raw Codex CLI and explore different frameworks and paradigms to build a sophisticated multi-agent system.
 
 ## New Dataset: Octet Lattices with Missing Struts
@@ -43,3 +51,4 @@ Here are some suggested tracks for your multi-agent system. You can choose one o
     *   **Concept:** Create a user-centric analysis platform.
     *   **Workflow:** Build an interactive dashboard that visualizes the data in 3D and features a chat interface.
     *   **Capability:** The agent should be able to "see" the current viewport of the dashboard and execute analysis tasks in real-time based on your questions (e.g., "Analyze the connectivity in the region I'm looking at").
+
