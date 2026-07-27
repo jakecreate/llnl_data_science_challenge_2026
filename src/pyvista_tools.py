@@ -11,15 +11,11 @@ def get_bounds(mesh):
 def load_stl(input_filepath: str, output_filepath: str):
     mesh = pv.read(input_filepath)
     print(get_bounds(mesh))
-    # pl = pv.Plotter(off_screen=True)
     pl = pv.Plotter()
     pl.add_mesh(mesh)
-    pl.camera_position = 'xy'
-    # pl.camera.zoom('tight')
-    # pl.show(screenshot='test.png')
+    pl.camera_position = 'xz'
+    pl.camera.zoom('tight')
     pl.show(screenshot=output_filepath)
-
-    # cpos = mesh.plot(cpos='xy')
 
 def thick_slice_z(mesh, z_center, thickness):
     bounds = list(mesh.bounds)
@@ -53,8 +49,44 @@ def slice_stl(input_filepath, height):
     # pl.add_mesh(slab)
     pl.show()
     
+# def load_stl(input_filepath: str, output_filepath: str, y_position: float = None, thickness: float = None):
+#     mesh = pv.read(input_filepath)
+#     print(get_bounds(mesh))
 
+#     if y_position is None:
+#         y_position = mesh.center[1]
 
-load_stl('0_skew.stl', None)
+#     if thickness is not None:
+#         bounds = list(mesh.bounds)
+#         bounds[2] = y_position - thickness / 2
+#         bounds[3] = y_position + thickness / 2
+#         sliced = mesh.clip_box(bounds, invert=False)
+#     else:
+#         origin = (mesh.center[0], y_position, mesh.center[2])
+#         sliced = mesh.slice(normal=(0, 1, 0), origin=origin)
+
+#     print('n points in slice:', sliced.n_points)
+#     print('sliced bounds:', sliced.bounds)
+
+#     if sliced.n_points == 0:
+#         print("Warning: empty slice at this position — skipping screenshot.")
+#         return sliced
+
+#     pl = pv.Plotter()
+#     # pl = pv.Plotter(off_screen=True)
+#     pl.add_mesh(sliced)
+#     pl.camera_position = 'xz'
+
+#     b = sliced.bounds
+#     if (b[1] - b[0]) > 1e-6 and (b[5] - b[4]) > 1e-6:  # nonzero X and Z extent
+#         pl.camera.zoom('tight')
+#     else:
+#         print("Warning: degenerate slice extent — using default zoom instead of 'tight'.")
+
+#     pl.show(screenshot=output_filepath)
+#     return sliced
+
+load_stl('model_scaled_translated_full.stl', None, y_position=10.0, thickness=1)
+# load_stl('model_scaled_translated_full.stl', None)
 # load_stl('data/missing_struts/stls/0.stl')
 # load_stl('model_aligned.stl')
