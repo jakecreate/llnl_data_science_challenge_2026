@@ -18,7 +18,7 @@ def load_stl(input_filepath: str, output_filepath: str):
     # pl.camera.zoom('tight')
     pl.enable_parallel_projection()
     pl.view_xz()   
-    pl.camera.tight(view='xz')
+    # pl.camera.tight(view='xz')
     pl.add_axes()
     pl.show(screenshot=output_filepath)
 
@@ -93,7 +93,7 @@ def slice_stl(input_filepath, height):
 #     pl.show(screenshot=output_filepath)
 #     return sliced
 
-load_stl('data/missing_struts/stls/0.stl', None)
+load_stl('registered_model.stl', None)
 # load_stl('model_scaled_translated_full.stl', None)
 # load_stl('data/missing_struts/stls/0.stl')
 # load_stl('model_aligned.stl')

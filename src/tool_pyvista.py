@@ -40,5 +40,5 @@ def load(input_filepath: str):
     return mesh
 
 # mesh = load('data/missing_struts/stls/0.stl')
-mesh = load('cropped_0.5.stl')
-print(screenshot_slice(mesh, 0, 'slices/z0_0.5_v2_test_skew.png', 'zy'))
+mesh = load('registered_model.stl')
+# print(screenshot_slice(mesh, 0, 'slices/z0_0.5_v2_test_skew.png', 'zy'))
