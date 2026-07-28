@@ -1,0 +1,10 @@
+expected_specimen,feature_table_available,note
+0-1,False,Requires registered geometry and per-strut CT feature extraction
+0-2,False,Requires registered geometry and per-strut CT feature extraction
+0-3,False,Requires registered geometry and per-strut CT feature extraction
+0.5-1,True,Ready for Isolation Forest screening
+0.5-2,False,Requires registered geometry and per-strut CT feature extraction
+0.5-3,False,Requires registered geometry and per-strut CT feature extraction
+1-1,False,Requires registered geometry and per-strut CT feature extraction
+1-2,False,Requires registered geometry and per-strut CT feature extraction
+1-3,False,Requires registered geometry and per-strut CT feature extraction

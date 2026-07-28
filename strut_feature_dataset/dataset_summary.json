@@ -1,0 +1,11 @@
+{
+  "specimen_id": "0.5-1",
+  "row_count": 18468,
+  "design_feature_count": 61,
+  "combined_feature_count": 75,
+  "geometry_source": "C:\\Users\\oconn\\DSC2026\\llnl_data_science_challenge_2026\\data\\missing_struts\\registered_jsons\\210127_Brian_Tran_strut_lattices_0point5dash1 1 Slices.json",
+  "ct_source": "C:\\Users\\oconn\\DSC2026\\llnl_data_science_challenge_2026\\data\\missing_struts\\defect_analysis\\strut_defect_results.json",
+  "voxel_spacing_um": 58.09,
+  "nominal_diameter_mm": 0.35,
+  "unit_cell_size_mm": 4.56
+}

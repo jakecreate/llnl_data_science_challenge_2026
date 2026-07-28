@@ -1,0 +1,60 @@
+{
+  "source_tiff": "C:\\Users\\oconn\\DSC2026\\llnl_data_science_challenge_2026\\data\\missing_struts\\tif_stacks\\210127_Brian_Tran_strut_lattices_0point5dash1 1 Slices.tif",
+  "source_json": "C:\\Users\\oconn\\DSC2026\\llnl_data_science_challenge_2026\\data\\missing_struts\\registered_jsons\\210127_Brian_Tran_strut_lattices_0point5dash1 1 Slices.json",
+  "volume_shape_zyx": [
+    761,
+    815,
+    837
+  ],
+  "triangle_threshold": 34947.0,
+  "diameter_voxels": 7.3,
+  "samples_per_strut": 31,
+  "json_junction_count": 10206,
+  "json_strut_count": 18468,
+  "unique_unordered_edge_count": 18468,
+  "centerline_occupancy": {
+    "min": 0.0,
+    "q01": 0.0,
+    "q05": 0.03225806451612903,
+    "q25": 0.45161290322580644,
+    "median": 1.0,
+    "q75": 1.0,
+    "q95": 1.0,
+    "q99": 1.0,
+    "max": 1.0,
+    "fraction_ge_0_8": 0.6957439896036387,
+    "fraction_ge_0_9": 0.6640675763482781,
+    "fraction_lt_0_3": 0.22108512020792723,
+    "fraction_lt_0_5": 0.2554147714966428
+  },
+  "tube_fill_occupancy": {
+    "min": 0.0,
+    "q01": 0.0,
+    "q05": 0.14265232974910394,
+    "q25": 0.467921146953405,
+    "median": 0.6781362007168459,
+    "q75": 0.8623655913978495,
+    "q95": 1.0,
+    "q99": 1.0,
+    "max": 1.0,
+    "fraction_ge_0_8": 0.3323045267489712,
+    "fraction_ge_0_9": 0.19839722763699372,
+    "fraction_lt_0_3": 0.1141433831492311,
+    "fraction_lt_0_5": 0.28286766298462207
+  },
+  "cross_sections_with_material": {
+    "min": 0.0,
+    "q01": 0.0,
+    "q05": 0.9032258064516129,
+    "q25": 1.0,
+    "median": 1.0,
+    "q75": 1.0,
+    "q95": 1.0,
+    "q99": 1.0,
+    "max": 1.0,
+    "fraction_ge_0_8": 0.9604721680745073,
+    "fraction_ge_0_9": 0.9539744422785359,
+    "fraction_lt_0_3": 0.027236300628113493,
+    "fraction_lt_0_5": 0.03151397011046134
+  }
+}

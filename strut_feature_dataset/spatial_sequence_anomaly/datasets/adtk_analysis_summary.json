@@ -1,0 +1,12 @@
+{
+  "total_struts": 18468,
+  "iqr_low_anomalies": 124,
+  "quantile_low_anomalies": 384,
+  "persist_negative_anomalies": 163,
+  "consensus_anomalies": 143,
+  "existing_high_or_critical": 92,
+  "consensus_overlap_with_existing_high_or_critical": 64,
+  "consensus_overlap_rate": 0.44755244755244755,
+  "existing_candidate_recall_by_consensus": 0.6956521739130435,
+  "interpretation": "agreement with existing screening ranks is not ground-truth accuracy"
+}

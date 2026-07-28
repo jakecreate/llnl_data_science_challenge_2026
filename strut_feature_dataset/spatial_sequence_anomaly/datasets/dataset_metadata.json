@@ -1,0 +1,9 @@
+{
+  "scientific_status": "spatial pseudo-sequences; not elapsed-time observations",
+  "strut_spatial_rows": 18468,
+  "centerline_profile_rows": 572508,
+  "centerline_profile_count": 18468,
+  "samples_per_profile": 31,
+  "ordering": "Morton order within unit_cell_edge_idx",
+  "voxel_spacing_um": 58.09
+}
