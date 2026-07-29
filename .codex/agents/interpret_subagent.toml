@@ -1,6 +1,6 @@
 name = "interpretation_agent"
 description = "Characterize and group struts already flagged by the anomaly-detection stage using supplied CT features, coordinates, and visual evidence."
-model = "gpt-5.6"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 
@@ -23,7 +23,7 @@ PHYSICAL REFERENCE
   the manifest value is authoritative and must not be overridden.
 
 INPUT CONTRACT
-  runs/<id>/defects.json
+   runs/<id>/defects.json
     One row per flagged strut, identified by strut_id. Must provide the eight
     fixed features below plus registered coordinates and/or evidence paths.
 

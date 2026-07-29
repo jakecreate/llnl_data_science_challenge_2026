@@ -10,6 +10,8 @@ import pyvista as pv
 import matplotlib.pyplot as plt
 import tifffile
 
+from interpretation_tools import load_interpretation_batch, write_characterization_outputs
+
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
 
@@ -142,6 +144,34 @@ def create_image_rectangle(input_filepath: str, output_filepath: str, top_left_p
         return f"Successfully saved image to {output_filepath}"
     except Exception as e:
         return f"Error while running create_image_rectangle: {e}"
+
+@mcp.tool()
+def load_batch(run_id: str, offset: int = 0, limit: int = 20) -> dict:
+    """Load a page of flagged struts for interpretation.
+    
+    Args:
+        run_id: Run directory name under runs/.
+        offset: Starting index (0-based).
+        limit: Number of rows to return.
+    
+    Returns:
+        {"status": "ok", "rows": [...], "total": N, "next_offset": int, "has_more": bool}
+    """
+    return load_interpretation_batch(run_id, offset, limit)
+
+
+@mcp.tool()
+def write_outputs(run_id: str, rows: list[dict]) -> dict:
+    """Validate and write characterization.csv + .md atomically.
+    
+    Args:
+        run_id: Run directory name under runs/.
+        rows: List of dicts with required schema columns.
+    
+    Returns:
+        {"status": "ok", "csv_path": str, "md_path": str, "n_rows": int}
+    """
+    return write_characterization_outputs(run_id, rows)
 
 if __name__ == "__main__":
     # Run the FastMCP server, exposing the tools over standard I/O (default)

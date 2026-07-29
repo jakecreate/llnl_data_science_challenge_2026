@@ -1,0 +1,6 @@
+{
+  "run_id": "fake001",
+  "voxel_size_um": 58.09,
+  "strut_diameter_um": 424.0,
+  "low_mean_density_threshold": 44500
+}

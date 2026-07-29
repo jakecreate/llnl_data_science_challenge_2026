@@ -1,8 +1,14 @@
-import csv
 import json
 import os
+import csv
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
+
+
+# MCP STARTUP FIX:
+# Resolve run files from the repository root instead of the process working
+# directory. Codex may start the MCP server from outside this repo.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 REQUIRED_COLUMNS = [
@@ -70,7 +76,7 @@ def write_characterization_outputs(run_id: str, rows: list[dict]) -> dict:
     if problems:
         return {"status": "error", "message": "validation failed", "problems": problems}
 
-    run_dir = os.path.join("runs", run_id)
+    run_dir = os.path.join(REPO_ROOT, "runs", run_id)
     os.makedirs(run_dir, exist_ok=True)
     csv_path = os.path.join(run_dir, "characterization.csv")
     md_path = os.path.join(run_dir, "characterization.md")
@@ -95,7 +101,7 @@ def write_characterization_outputs(run_id: str, rows: list[dict]) -> dict:
         groups[row["group_id"]].append(row)
 
     lines = []
-    lines.append(f"# Characterization summary — run {run_id}")
+    lines.append(f"# Characterization summary - run {run_id}")
     lines.append(f"_generated {datetime.now(timezone.utc).isoformat(timespec='seconds')}Z_")
     lines.append("")
     lines.append("## Counts per class")
@@ -125,7 +131,67 @@ def write_characterization_outputs(run_id: str, rows: list[dict]) -> dict:
 
     return {"status": "ok", "csv_path": csv_path, "md_path": md_path, "n_rows": len(rows)}
 
-# Quick test — add this to write_characterization_outputs.py at the bottom
+def load_interpretation_batch(run_id: str, offset: int = 0, limit: int = 20) -> dict:
+    """Page through flagged struts for a run, sorted by strut_id.
+
+    Args:
+        run_id: Run directory name under runs/.
+        offset: Index of the first strut to return (0-based).
+        limit: Max number of struts to return in this call.
+
+    Returns:
+        {"status": "ok", "rows": [...], "total": N,
+         "next_offset": int, "has_more": bool}
+        or {"status": "error", "message": "..."}
+    """
+    path = os.path.join(REPO_ROOT, "runs", run_id, "defects.json")
+
+    try:
+        with open(path) as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        return {"status": "error", "message": f"no defects file at {path}"}
+    except json.JSONDecodeError as exc:
+        return {"status": "error", "message": f"malformed json in {path}: {exc}"}
+
+    defects = data.get("defects", [])
+    if not defects:
+        return {"status": "ok", "rows": [], "total": 0,
+                "next_offset": 0, "has_more": False}
+
+    # stable order: without this, offset/limit paging is meaningless
+    defects_sorted = sorted(defects, key=lambda d: d["strut_id"])
+
+    total = len(defects_sorted)
+    page = defects_sorted[offset:offset + limit]
+    next_offset = offset + len(page)
+
+    return {
+        "status": "ok",
+        "rows": page,
+        "total": total,
+        "next_offset": next_offset,
+        "has_more": next_offset < total,
+    }
+
+
+# # --- quick check against the fake data -------------------------------------
+# if __name__ == "__main__":
+#     os.makedirs("runs/fake001", exist_ok=True)
+#     # assumes defects.json already placed at runs/fake001/defects.json
+
+#     page1 = load_interpretation_batch("fake001", offset=0, limit=3)
+#     print("page 1:", [r["strut_id"] for r in page1["rows"]],
+#           "has_more:", page1["has_more"])
+
+#     page2 = load_interpretation_batch("fake001", offset=page1["next_offset"], limit=3)
+#     print("page 2:", [r["strut_id"] for r in page2["rows"]],
+#           "has_more:", page2["has_more"])
+
+#     missing = load_interpretation_batch("does_not_exist")
+#     print("missing run:", missing)
+
+# # Quick test - add this to write_characterization_outputs.py at the bottom
 # if __name__ == "__main__":
 #     # load a page
 #     from load_interpretation import load_interpretation_batch
@@ -152,42 +218,3 @@ def write_characterization_outputs(run_id: str, rows: list[dict]) -> dict:
     
 #     result = write_characterization_outputs("fake001", rows)
 #     print(result)
-
-
-# # --- quick check ------------------------------------------------------------
-# if __name__ == "__main__":
-#     good_rows = [
-#         {
-#             "strut_id": 1042, "class": "missing", "group_id": 0, "confidence": "high",
-#             "occupancy": 0.04, "gap_length_voxels": 0.0, "gap_position_frac": 0.0,
-#             "mean_density": 0.03, "min_density": 0.0, "bbox_extent_frac": 0.06,
-#             "centroid_offset_voxels": 0.4, "principal_axis_angle_deg": 0.0,
-#             "reasoning": "rule 1, occupancy 0.04 and bbox 0.06, both below threshold",
-#         },
-#         {
-#             "strut_id": 1533, "class": "disconnected", "group_id": 1, "confidence": "high",
-#             "occupancy": 0.61, "gap_length_voxels": 7.8, "gap_position_frac": 0.48,
-#             "mean_density": 0.71, "min_density": 0.02, "bbox_extent_frac": 0.97,
-#             "centroid_offset_voxels": 0.9, "principal_axis_angle_deg": 1.2,
-#             "reasoning": "rule 2, mid-span gap 7.8 vox, material both sides",
-#         },
-#         {
-#             "strut_id": 1534, "class": "disconnected", "group_id": 1, "confidence": "high",
-#             "occupancy": 0.58, "gap_length_voxels": 8.4, "gap_position_frac": 0.52,
-#             "mean_density": 0.69, "min_density": 0.01, "bbox_extent_frac": 0.96,
-#             "centroid_offset_voxels": 1.1, "principal_axis_angle_deg": 0.8,
-#             "reasoning": "rule 2, mid-span gap 8.4 vox, adjacent to strut 1533",
-#         },
-#     ]
-
-#     result = write_characterization_outputs("fake001", good_rows)
-#     print("good case:", result)
-
-#     bad_rows = [{"strut_id": 9999, "class": "not_a_real_class", "confidence": "high"}]
-#     result_bad = write_characterization_outputs("fake001", bad_rows)
-#     print("bad case:", result_bad)
-
-#     if result["status"] == "ok":
-#         print("\n--- characterization.md ---")
-#         with open(result["md_path"]) as f:
-#             print(f.read())
