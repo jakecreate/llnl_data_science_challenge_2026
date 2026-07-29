@@ -1,0 +1,6 @@
+strut_id,class,group_id,confidence,occupancy,gap_length_voxels,gap_position_frac,mean_density,min_density,bbox_extent_frac,centroid_offset_voxels,principal_axis_angle_deg,reasoning
+1042,missing,0,high,0.041,0.0,,12840,1020,0.09,0.8,1.2,test row from fake data
+1533,disconnected,0,low,0.84,8.7,0.49,50120,1110,0.96,1.2,1.1,test row from fake data
+1534,disconnected,0,low,0.79,6.4,0.54,49380,980,0.94,1.5,1.8,test row from fake data
+2260,missing,0,high,0.063,0.0,,15220,870,0.11,1.1,0.8,test row from fake data
+2261,missing,0,high,0.085,0.0,,17580,1160,0.16,1.4,1.5,test row from fake data
