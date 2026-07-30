@@ -1,7 +1,7 @@
 from fastmcp import FastMCP
 import numpy as np
 from PIL import Image
-from skeletonization import skeletonize_mask
+from skeletonization import skeletonize_mask, skeletonize_segmented_png
 from volume import volume_of_mesh
 from tool_pyvista import *
 from tool_opencv import *
@@ -9,18 +9,59 @@ import cv2
 import pyvista as pv
 import matplotlib.pyplot as plt
 import tifffile
+pv.OFF_SCREEN = True
 
 # Initialize the MCP server
 mcp = FastMCP("CT Segmentation")
 
 @mcp.tool()
-def segment_ct_dataset(input_filepath: str, output_filepath: str, threshold: float) -> str:
+def segment_slice(input_filepath: str, output_filepath: str, threshold: float) -> str:
     """
-    Segments a 3D CT dataset based on a given density threshold value.
+    Segments a image slice based on a given density threshold value.
     
     Args:
-        input_filepath: Path to the input .npy file containing the 3D CT scan data.
-        output_filepath: Path indicating where the segmented .npy file should be saved.
+        input_filepath: Path to the image containing the slice.
+        output_filepath: Path indicating where the segmented slice should be.
+        threshold: The density value to use as a threshold. Voxels >= threshold will be set to 1, others to 0.
+
+    Returns:
+        A status message indicating success and the save location, or an error message.
+    """
+    try:
+        image = cv2.imread(input_filepath, cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255.0
+        ret, thresh = cv2.threshold(image, threshold, 1.0, cv2.THRESH_BINARY_INV)
+        output_image = (thresh * 255).astype(np.uint8)
+        cv2.imwrite(output_filepath, output_image)
+    except Exception as e:
+        return f"Error while running segment_ct_dataset: {e}"
+    return f"Dataset has been segmented and saved to {output_filepath}"
+
+@mcp.tool()
+def skeletonize_slice(input_filepath: str, output_filepath: str) -> str:
+    """
+    Creates a skeleton from a segmented image slice mask.
+    
+    Args:
+        input_filepath: Path to the .png file containing the masked slice.
+        output_filepath: Path to save the extracted skeleton (.png).
+        
+    Returns:
+        A status message indicating success and the save location, or an error message.
+    """
+    try:
+        skeletonize_segmented_png(input_filepath, output_filepath)
+        return f"Successfully saved skeleton to {output_filepath}"
+    except Exception as e:
+        return f"Error while running skeletonize: {e}"
+
+@mcp.tool()
+def segment_ct_dataset(input_filepath: str, output_filepath: str, threshold: float) -> str:
+    """
+    Segments a image slice based on a given density threshold value.
+    
+    Args:
+        input_filepath: Path to the image containing the image slice.
+        output_filepath: Path indicating where the segmented .png file should be saved.
         threshold: The density value to use as a threshold. Voxels >= threshold will be set to 1, others to 0.
     
     Returns:
@@ -38,43 +79,13 @@ def segment_ct_dataset(input_filepath: str, output_filepath: str, threshold: flo
     return f"Dataset has been segmented and saved to {output_filepath}"
 
 @mcp.tool()
-def visualize_slice(input_filepath: str, output_filepath: str, slice_index: int, axis: int = 0) -> str:
-    """
-    Loads a 3D CT dataset from a .npy file and saves a visualization of a specific slice to an image file.
-    
-    Args:
-        input_filepath: Path to the input .npy file containing the 3D CT data.
-        output_filepath: Path indicating where the output image should be saved (e.g., .png).
-        slice_index: The index of the slice to visualize.
-        axis: The axis along which to take the slice (0, 1, or 2). Default is 0.
-        
-    Returns:
-        A status message indicating success and the save location, or an error message.
-    """
-    try:
-        voxels = np.load(input_filepath)
-        slice = np.take(voxels, slice_index, axis=axis)
-
-        slice_min, slice_max = slice.min(), slice.max()
-        if slice_max > slice_min:
-            normalized = ((slice - slice_min) / (slice_max - slice_min) * 255).astype(np.uint8)
-        else:
-            normalized = np.zeros_like(slice, dtype=np.uint8)
-
-        image = Image.fromarray(normalized)
-        image.save(output_filepath)
-    except Exception as e:
-        return f"Error while running visualize_slice: {e}"
-    return f"Dataset has been sliced and saved to {output_filepath}"
-
-@mcp.tool()
 def skeletonize(input_filepath: str, output_filepath: str) -> str:
     """
-    Creates a skeleton from a 3D segmentation mask.
+    Creates a skeleton from a segmentation image mask.
     
     Args:
-        input_filepath: Path to the .npy file containing the 3D mask.
-        output_filepath: Path to save the extracted skeleton (.npy).
+        input_filepath: Path to the .png file containing the smask.
+        output_filepath: Path to save the extracted skeleton (.png).
         
     Returns:
         A status message indicating success and the save location, or an error message.

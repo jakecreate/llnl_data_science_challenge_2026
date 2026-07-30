@@ -77,7 +77,7 @@ def register_stl_to_json(stl_path, json_path, output_stl_path):
 if __name__ == "__main__":
     # Replace file names with your paths
     register_stl_to_json(
-        stl_path="data/missing_struts/stls/0.stl",
+        stl_path="data/missing_struts/stls/0.5.stl",
         json_path="data/missing_struts/registered_jsons/210127_Brian_Tran_strut_lattices_0point5dash1 1 Slices.json",
-        output_stl_path="registered_model.stl"
+        output_stl_path="registered_model_0.5.stl"
     )

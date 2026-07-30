@@ -10,13 +10,11 @@ def slice(mesh, z_slice):
 def screenshot_slice(mesh, z_slice, output_filepath: str, facing: str = 'xy'):
     try:
         pl = pv.Plotter(off_screen=True)
-        # slab = slice(mesh, z_slice)
-        # pl.add_mesh(slab, color='black')
         origin = (mesh.center[0], mesh.center[1], z_slice)
         slice = mesh.slice(normal=[0, 0, 1], origin=origin)
         pl.add_mesh(slice, color='black')
         pl.camera_position = facing
-        pl.camera.zoom('tight')
+        pl.camera.zoom('tight') 
         pl.show(screenshot=output_filepath)
         return True
     except Exception as e:
@@ -39,6 +37,7 @@ def load(input_filepath: str):
     mesh = pv.read(input_filepath)
     return mesh
 
-# mesh = load('data/missing_struts/stls/0.stl')
-mesh = load('registered_model.stl')
+mesh = load('data/missing_struts/stls/0.stl')
+print(mesh.bounds)
+# mesh = load('cropped_0.5.stl')
 # print(screenshot_slice(mesh, 0, 'slices/z0_0.5_v2_test_skew.png', 'zy'))

@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 import os
 from skimage.morphology import skeletonize
 
@@ -33,6 +34,36 @@ def skeletonize_mask(file_path, output_path):
     print(f"Saved skeleton to: {output_path}")
     
     return skeleton
+
+def skeletonize_segmented_png(input_filepath: str, output_filepath: str) -> str:
+    try:
+        # 1. Load the segmented PNG in grayscale
+        image = cv2.imread(input_filepath, cv2.IMREAD_GRAYSCALE)
+        
+        if image is None:
+            return f"Error: Could not read image at {input_filepath}"
+
+        # 2. Convert to a boolean array
+        # skeletonize() requires True/False values, not 0-255 pixel brightness.
+        # Anything greater than 127 becomes True (active structure).
+        bool_image = image > 127
+        
+        # 3. Perform the skeletonization
+        skeleton = skeletonize(bool_image)
+        
+        # 4. Convert back to an 8-bit OpenCV format (0 and 255)
+        skeleton_image = (skeleton * 255).astype(np.uint8)
+        
+        # 5. Export the skeletonized image
+        success = cv2.imwrite(output_filepath, skeleton_image)
+        
+        if not success:
+             return f"Error: Failed to write image to {output_filepath}"
+             
+    except Exception as e:
+        return f"Error processing image: {e}"
+        
+    return f"Image successfully skeletonized and saved to {output_filepath}"
 
 if __name__ == "__main__":
     # Hardcoded parameters for testing
