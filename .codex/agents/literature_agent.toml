@@ -1,0 +1,23 @@
+name = "literature_agent"
+description = "Finds relevant CT lattice analysis methods, retrieves cached methods from LLM-Wiki, or performs a fresh search."
+model = "gpt-5.4-codex"
+model_reasoning_effort = "high"
+sandbox_mode = "workspace-write"   # only needs to write inside LLM-Wiki/
+model_instructions_file = "skills/literature_agent/SKILL.md"
+
+developer_instructions = """
+You are the Literature Agent in a CT lattice analysis pipeline.
+Always route external lookups through lit_tools.literature_search — never
+use a general web_search. Output strictly valid JSON, no prose.
+"""
+
+# Unconfirmed schema — verify against your installed Codex version before relying on it
+[tools]
+allowed = [
+    "lit_tools.literature_search",
+    "lit_tools.update_wiki_entry",
+    "lit_tools.validate_output",
+    "read_file",
+    "write_file",
+]
+disallowed = ["shell_exec", "web_search"]
