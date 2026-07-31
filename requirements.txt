@@ -3,4 +3,8 @@ matplotlib
 fastmcp
 scikit-image
 tifffile
-opencv-python
+pydantic
+pytest
+nbconvert
+playwright
+httpx
