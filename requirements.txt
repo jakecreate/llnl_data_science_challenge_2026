@@ -4,3 +4,7 @@ fastmcp
 scikit-image
 tifffile
 opencv-python
+scipy==1.18.0
+networkx==3.6.1
+skan==0.13.1
+porespy==3.0.4

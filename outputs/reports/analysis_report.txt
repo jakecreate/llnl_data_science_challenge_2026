@@ -1,0 +1,162 @@
+## 1. CT slice quality control
+
+  outputs/reports/ct_qc_slice_trends.png
+
+  This figure asks whether measurements change suspiciously as the scanner moves through Z.
+
+  - Z-slice robust range: This is the 95th–5th percentile intensity range in each slice. The repeated peaks probably correspond largely to real periodic
+    lattice geometry passing through the slices. The much larger behavior near the beginning and end reflects specimen/end-region effects or changing
+    material coverage.
+
+  - Abrupt-jump robust z: Measures unusually large slice-to-slice changes in mean intensity. Values above the red line are flagged. The pipeline identified
+    111 slices, but their periodic organization suggests the detector is responding to lattice periodicity as well as potential acquisition
+    discontinuities.
+
+  - Low-contrast robust z: Looks for slices whose intensity range is abnormally small. Nothing exceeds the threshold, so no slices were classified as
+    anomalously low contrast.
+
+  Significance: There is no evidence of an extended low-contrast failure, but slice-to-slice intensity is highly structured. The 111 abrupt flags should
+  not be interpreted as 111 defective CT slices without visually checking them; this detector does not distinguish scanner artifacts from genuine periodic
+  geometry.
+
+  ## 2. Segmentation diagnostics
+
+  outputs/reports/ct_segmentation_diagnostics.png
+
+  This is the main check that bright CT material was converted into the correct binary lattice.
+
+  - Normalized CT, central Z: The intensity-normalized source slice. Struts appear as bright lines or point-like intersections depending on how they cross
+    the selected plane.
+
+  - Selected ensemble mask: The final binary foreground after combining three segmentation candidates by a two-of-three vote and retaining the largest
+    connected component.
+
+  - Segmentation overlay: The green contour shows the mask boundary on the CT. Good alignment means the binary geometry follows visible material rather
+    than background noise.
+
+  - Stratified raw histogram: Shows sampled raw intensities. The orange lines at 28,279 and 56,047 are the 0.5th and 99.5th percentile normalization limits
+    —not segmentation thresholds.
+
+  - Raw Z-slice intensity trends: Mean and standard deviation change with material coverage. Periodic standard-deviation peaks are consistent with repeated
+    lattice structure.
+
+  - Ensemble disagreement: Red pixels are locations where the three selected segmentation methods did not all agree. Disagreement is concentrated along
+    strut boundaries, where partial-volume effects make foreground/background assignment ambiguous.
+
+  The selected segmentation:
+
+  - occupies 11.73% of the analysis volume;
+  - retains 99.99% of its foreground in one dominant connected component;
+  - has disagreement in 6.21% of all analysis voxels.
+
+  Significance: Global connectivity is strong, and the overlay broadly follows the CT. However, 6.21% disagreement is substantial compared with an 11.73%
+  foreground fraction. Thin struts may therefore gain or lose a meaningful fraction of their width—or even their connectivity—depending on the threshold.
+  The disagreement image is especially important when interpreting small diameters and short graph branches.
+
+  ## 3. Skeleton and logical graph
+
+  outputs/reports/skeleton_graph_diagnostics.png
+
+  This figure evaluates whether the segmented solid was reduced to a useful centerline network.
+
+  - Central-Z mask + skeleton: White is segmented material; red is its one-voxel-wide skeleton. Ideally, red lines should run near the centers of struts
+    without unexplained side branches.
+
+  - Longest retained logical edges + junctions: Blue lines are the 1,800 longest retained graph edges; red points are junction nodes with degree at least
+    three. This is only a subset of the 15,682 retained edges, so it is a diagnostic rendering rather than the complete graph.
+
+  The extracted graph contains:
+
+  - 138,996 skeleton voxels;
+  - 5,448 logical nodes and 15,682 retained logical edges;
+  - one connected component;
+  - 1,171 short terminal spurs removed;
+  - a cycle rank of 10,235;
+  - 96.47% skeleton accounting.
+
+  Significance: The one connected component supports the conclusion that the lattice forms a globally continuous network. But the very dense junction
+  cloud, 15,682 edges, and high cycle rank indicate much more small-scale topological complexity than a clean cell-level lattice representation would
+  normally suggest. Likely contributors include voxel stair-stepping, segmentation boundary noise, 26-neighbor connectivity, merged material around nodes,
+  and the 4× sampling grid.
+
+  Thus, this graph is suitable for describing the CT-derived voxel network, but its individual nodes and edges should not automatically be equated with
+  nominal CAD nodes and struts. CAD registration or stronger graph simplification would be needed for that interpretation.
+
+  ## 4. Morphometry diagnostics
+
+  outputs/reports/morphometry_diagnostics.png
+
+  ### Per-edge local diameter
+
+  Each skeleton point samples twice the foreground Euclidean distance transform. Measurements within 8 original voxels of each endpoint are excluded from
+  the per-edge summary to reduce junction thickening.
+
+  The huge peak at diameter 8 is the most important observation:
+
+  - the dataset-wide reliable-edge median is 8;
+  - its interquartile range is also 8–8;
+  - 13,711 of 14,728 edges with a finite median—93.1%—have an exact median diameter of 8.
+
+  Because the analysis-grid spacing is 4, a centerline voxel one sampled voxel from the background has radius 4 and diameter 8.
+
+  Significance: The dominant diameter is an analysis-resolution floor, not convincing evidence that nearly every physical strut has exactly the same
+  diameter. Most small struts are under-resolved after 4× decimation.
+
+  ### Distinct diameter estimators
+
+  The scatter plot compares:
+
+  - local median diameter: distance-transform width along the centerline;
+  - volume–length equivalent diameter: the diameter of a cylinder having the foreground volume assigned to that edge and the same graph length.
+
+  The dashed line denotes equality. The estimates differ systematically because they measure different things. The volume-based estimate includes
+  foreground assigned by nearest-centerline partitioning, including material near bulky nodes, and is affected by how densely adjacent edges are
+  represented.
+
+  Significance: Agreement near the diagonal increases confidence that an edge behaves like a roughly cylindrical strut. Large deviations can indicate
+  junction contamination, non-circular shape, taper, an incorrect logical edge, or biased volume assignment. These two columns should not be treated as
+  interchangeable diameter measurements.
+
+  ### Node thickening ratio
+
+  This is the robust local node diameter divided by the median diameter of its incident struts.
+
+  - A value near 1 means little detected thickening.
+  - Values above 1 suggest a node thicker than its incident struts.
+  - Values below 1 are geometrically unusual and can signal measurement or graph-assignment problems.
+
+  About 87.6% of measurable nodes lie between 0.9 and 1.1, while 8.6% exceed 1.2.
+
+  Significance: Most nodes appear similar in measured size to their incident struts, but this result is also dominated by the same diameter-8 quantization.
+  Therefore, the spike near 1 does not prove that physical nodes lack thickening. The high-ratio tail is more useful for identifying candidate bulky or
+  merged nodes for inspection.
+
+  ## 5. Diameter variation along individual edges
+
+  outputs/reports/diameter_along_edge_profiles.png
+
+  This plots local distance-transform diameter along the eight longest edges that passed the notebook’s reliability rule.
+
+  - Flat profiles indicate approximately uniform detected width.
+  - Gradual increases or decreases can indicate taper.
+  - End increases may be caused by node thickening.
+  - Sharp jumps can indicate a path crossing a junction, entering a merged region, or moving between quantized distance-transform levels.
+  - The repeated plateaus at values such as 8, 24, 32, 40, and 48 are characteristic of coarse voxel-grid measurement.
+
+  Some edges remain near 24–32, while edges 235 and 239 spend much of their length near 40–49. Those unusually thick paths may represent boundary
+  structures, merged material, or paths through node-rich regions rather than ordinary lattice struts.
+
+  Two caveats apply:
+
+  - Although endpoint samples are excluded from the tabulated per-edge diameter summary, this visualization plots the complete cached profile, including
+    endpoints.
+
+  - “Reliable” here means the edge has enough non-junction samples and passes basic length/exclusion rules. It does not prove that it corresponds to one
+    physically valid strut.
+
+  ## Overall conclusion
+
+  Together, the figures support a connected, successfully segmented bright-material lattice. Their strongest scientific message, however, is that the 4×
+  analysis grid is too coarse for precise small-strut morphometry. Connectivity and broad spatial trends are useful, while the exact node count, edge
+  count, diameter-8 peak, and node/strut ratios should be treated as resolution-dependent CT descriptors—not ground-truth manufacturing dimensions or a
+  recovered nominal CAD topology.

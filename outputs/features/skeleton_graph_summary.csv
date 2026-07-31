@@ -1,0 +1,2 @@
+dataset_id,segmentation_id,skeleton_voxel_count,skan_branch_count,logical_node_count,logical_edge_count,endpoint_count,junction_count,component_count,cycle_rank,largest_component_node_fraction,pruned_spur_count,skeleton_accounting_fraction,connectivity,configuration_hash
+9x9x9_octet_lattice,498e39d08d75a818,138996,29428,5448,15682,1599,3824,1,10235,1.0,1171,0.9646752424530203,26,498e39d08d75a818

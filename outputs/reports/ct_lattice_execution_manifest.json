@@ -1,0 +1,96 @@
+{
+  "dataset_id": "9x9x9_octet_lattice",
+  "source_path": "data/9x9x9_octet_lattice.tif",
+  "source_bytes": 1038433319,
+  "source_shape": [
+    761,
+    815,
+    837
+  ],
+  "axis_convention": "ZYX",
+  "physical_voxel_spacing": null,
+  "analysis_spacing": [
+    4.0,
+    4.0,
+    4.0
+  ],
+  "analysis_units": "original_voxels",
+  "configuration": {
+    "dataset_id": "9x9x9_octet_lattice",
+    "axis_convention": "ZYX",
+    "downsample_factor": 4,
+    "analysis_spacing_original_voxels": [
+      4.0,
+      4.0,
+      4.0
+    ],
+    "raw_qc_xy_stride": 4,
+    "normalization_percentiles": [
+      0.5,
+      99.5
+    ],
+    "min_component_analysis_voxels": 16,
+    "max_bounded_hole_analysis_voxels": 7,
+    "ensemble_top_k": 3,
+    "ensemble_vote_fraction": 0.6666666666666666,
+    "spur_prune_length_original_voxels": 16.0,
+    "junction_exclusion_radius_original_voxels": 8.0,
+    "connectivity": 26,
+    "random_seed": 20260731
+  },
+  "configuration_hash": "498e39d08d75a818",
+  "segmentation_identifier": "498e39d08d75a818",
+  "software_versions": {
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "scikit-image": "0.26.0",
+    "tifffile": "2026.7.14",
+    "matplotlib": "3.11.1",
+    "pandas": "3.0.5",
+    "networkx": "3.6.1",
+    "skan": "0.13.1",
+    "porespy": "3.0.4"
+  },
+  "python": "3.12.13 (main, Jun 23 2026, 15:44:24) [Clang 22.1.3 ]",
+  "validation_passed": true,
+  "warnings": [
+    "TIFF has no physical-resolution metadata; results are in original-voxel units.",
+    "Spatial morphology uses a 4\u00d7 decimated analysis grid.",
+    "Logical paths account for 96.47% of retained skeleton voxels; untraced pixels are degree-two-only cycles or local connectivity ambiguities.",
+    "No CAD registration or ground-truth defect labels were used."
+  ],
+  "artifacts": [
+    "outputs/features/ct_volume_qc.csv",
+    "outputs/features/segmentation_sweep.csv",
+    "outputs/features/ct_selected_mask_ds4.tif",
+    "outputs/features/ct_segmentation_disagreement_ds4.tif",
+    "outputs/features/skeleton_nodes.csv",
+    "outputs/features/skeleton_edges.csv",
+    "outputs/features/skeleton_graph_summary.csv",
+    "outputs/features/skeleton_pruned_spurs.csv",
+    "outputs/features/skeleton_graph.json",
+    "outputs/features/strut_morphometry.csv",
+    "outputs/features/node_morphometry.csv",
+    "outputs/features/morphometry_summary.csv",
+    "outputs/features/synthetic_validation.csv"
+  ],
+  "reports": [
+    "outputs/reports/ct_segmentation_diagnostics.png",
+    "outputs/reports/ct_qc_slice_trends.png",
+    "outputs/reports/skeleton_graph_diagnostics.png",
+    "outputs/reports/morphometry_diagnostics.png",
+    "outputs/reports/diameter_along_edge_profiles.png",
+    "outputs/reports/ct_lattice_final_report.ipynb"
+  ],
+  "row_counts": {
+    "ct_volume_qc.csv": 1,
+    "segmentation_sweep.csv": 7,
+    "skeleton_nodes.csv": 6619,
+    "skeleton_edges.csv": 16853,
+    "skeleton_graph_summary.csv": 1,
+    "strut_morphometry.csv": 15682,
+    "node_morphometry.csv": 5448,
+    "morphometry_summary.csv": 1,
+    "synthetic_validation.csv": 9
+  }
+}

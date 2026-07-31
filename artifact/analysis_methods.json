@@ -1,0 +1,28 @@
+[
+  {
+    "name": "CT Volume QC & Segmentation Ensemble",
+    "description": "Evaluates raw voxel distributions, runs multi-threshold parameter sweeps (Otsu, Phansalkar), and flags image artifacts (ring/beam hardening).",
+    "python_packages": [
+      "tifffile",
+      "skimage.filters",
+      "scipy.ndimage"
+    ]
+  },
+  {
+    "name": "CT-Only Skeleton Graph & Strut-Node Recovery",
+    "description": "Converts 3D binary voxels into a 1D centerline graph (networkx), extracting branch nodes, degree, and edge connectivity without CAD.",
+    "python_packages": [
+      "skan",
+      "scikit-image (morphology.skeletonize_3d)",
+      "networkx"
+    ]
+  },
+  {
+    "name": "Strut & Node Morphometry / Equivalent Diameter",
+    "description": "Calculates local thickness via Euclidean distance transform along 3D centerlines to compute equivalent strut diameters.",
+    "python_packages": [
+      "scipy.ndimage (distance_transform_edt)",
+      "PoreSpy"
+    ]
+  }
+]

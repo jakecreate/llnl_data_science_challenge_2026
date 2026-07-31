@@ -1,0 +1,10 @@
+test,observed,expected,passed
+two-phase fraction,0.3125,0.3125,True
+polarity reversal,0.6875,0.6875,True
+constant-volume rejection,True,True,True
+ring sensitivity,162.94,> 1,True
+beam-hardening sensitivity,0.809,> baseline,True
+straight-line topology,"(2, 1)","(2 nodes, 1 edge)",True
+cylinder diameter ordering,"[7.21, 10.77]",increasing with radius,True
+radius-6 diameter recovery,10.77,12 ± 2 voxels,True
+anisotropic-spacing diameter,10.77,12 ± 2 physical units,True
