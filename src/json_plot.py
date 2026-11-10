@@ -3,7 +3,7 @@ import numpy as np
 import pyvista as pv
 
 # Load data
-with open('210127_Brian_Tran_strut_lattices_0point5dash1 1 Slices_full.json') as f:
+with open('./data/missing_struts/registered_jsons/210127_Brian_Tran_strut_lattices_0point5dash1 1 Slices.json') as f:
     data = json.load(f)
 
 junctions = data['junctions']
@@ -33,8 +33,9 @@ lattice_tubes = lattice.tube(radius=0.5)
 plotter = pv.Plotter()
 plotter.add_mesh(lattice_tubes, color='silver', smooth_shading=True)
 # input_filepath = 'data/missing_struts/stls/0.stl'
-input_filepath = 'model_aligned_cropped.stl'
+input_filepath = './data/missing_struts/tif_stacks/210127_Brian_Tran_strut_lattices_0point5dash1 1 Slices.tif'
 mesh = pv.read(input_filepath)
+mesh = mesh[]
 # pl = pv.Plotter(off_screen=True)
 # pl = pv.Plotter()
 plotter.add_mesh(mesh)
